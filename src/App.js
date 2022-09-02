@@ -1,6 +1,6 @@
 import Todos from './components/Todos.js';
 
-const LOCAL_STORAGE_KEY = 'todos';
+const TODOS_KEY = 'todos';
 
 export default function App({ $target }) {
   this.state = {
@@ -18,7 +18,6 @@ export default function App({ $target }) {
       });
     },
     onClick: (e) => {
-      e.preventDefault();
       const removeId = parseInt(e.target.parentNode.dataset.todoId);
       const newTodos = this.state.todos.filter((todo) => todo.id !== removeId);
       this.setState({
@@ -30,14 +29,22 @@ export default function App({ $target }) {
   this.setState = (nextState) => {
     this.state = nextState;
     todos.setState(this.state.todos);
-    // window.localStorage.setItem(LOCAL_STORAGE_KEY, this.state.todos)
+    localStorage.setItem(TODOS_KEY, JSON.stringify(this.state.todos));
   };
 
-  // const init = () => {
-  //   try {
-  //     const load = window.localStorage.getItem(LOCAL_STORAGE_KEY)
-  //   } catch (error) {
-  //     throw new Error(`할일 목록 로딩에 실패하였습니다${error}`)
-  //   }
-  // }
+  const init = () => {
+    try {
+      const load = localStorage.getItem(TODOS_KEY);
+      if (load) {
+        const parsed = JSON.parse(load);
+        this.setState({
+          todos: parsed,
+        });
+      }
+    } catch (error) {
+      throw new Error(`할일 목록 로딩에 실패하였습니다${error}`);
+    }
+  };
+
+  init();
 }

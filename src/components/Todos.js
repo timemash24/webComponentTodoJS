@@ -20,7 +20,7 @@ export default function Todos({ $target, initialState, onSubmit, onClick }) {
         )
         .join('');
 
-      $element.innerHTML = `<form><input type="text" placeholder="할일을 입력하세요"/></form>${todoTemplate}`;
+      $element.innerHTML = `<form><input type="text" placeholder="할일을 입력하고 Enter를 누르세요" required/></form><ul>${todoTemplate}</ul>`;
     }
 
     $element
